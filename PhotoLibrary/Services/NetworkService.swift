@@ -14,7 +14,7 @@ class NetworkService {
     func request(searchTerm: String, completion: @escaping (Data?, Error?) -> Void)  {
         
         let parameters = self.prepareParaments(searchTerm: searchTerm)
-        let url = self.url(params: parameters)
+        let url = self.url(params: parameters) 
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = prepareHeader()
         request.httpMethod = "get"

@@ -76,7 +76,8 @@ class PhotosCollectionViewController: UICollectionViewController {
         })
         
         let alertController = UIAlertController(title: "", message: "\(selectedPhotos!.count) фото будут добавлены в альбом", preferredStyle: .alert)
-            let add = UIAlertAction(title: "Добавить", style: .default) { (action) in
+          
+        let add = UIAlertAction(title: "Добавить", style: .default) { (action) in
             let tabbar = self.tabBarController as! MainTabBarController
             let navVC = tabbar.viewControllers?[1] as! UINavigationController
             let likesVC = navVC.topViewController as! LikesCollectionViewController
@@ -164,7 +165,7 @@ class PhotosCollectionViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCell.reuseId, for: indexPath) as! PhotoCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCell.reuseId, for: indexPath) as? PhotoCell else { return UICollectionViewCell()}
         let unspashPhoto = photos[indexPath.item]
         cell.unsplashPhoto = unspashPhoto
         return cell

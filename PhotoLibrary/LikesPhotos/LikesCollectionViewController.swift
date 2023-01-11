@@ -73,7 +73,7 @@ class LikesCollectionViewController: UICollectionViewController {
     
     func deletePhoto(unlikedPhoto: UnsplashPhoto) {
         var sublikedPhotos = self.photosArray
-        
+
         for sublikedPhoto in sublikedPhotos {
             if sublikedPhoto.id == unlikedPhoto.id {
                 guard let photoIndex = sublikedPhotos.firstIndex(of: sublikedPhoto) else { return }
@@ -81,13 +81,13 @@ class LikesCollectionViewController: UICollectionViewController {
             }
     }
         self.photosArray = sublikedPhotos
-       
+
 }
     
     // MARK: - NavigationItems action
     
     @objc private func trashBarButtonItemTapped() {
-       
+        
         let selectedPhotos = collectionView.indexPathsForSelectedItems?.reduce([], { (photosss, indexPath) -> [UnsplashPhoto] in
             var mutablePhotos = photosss
             let photo = photosArray[indexPath.item]
@@ -96,21 +96,25 @@ class LikesCollectionViewController: UICollectionViewController {
         })
         
         let alertController = UIAlertController(title: "", message: "\(selectedPhotos!.count) фото будут удалены из альбома", preferredStyle: .alert)
-        let add = UIAlertAction(title: "Удалить", style: .default) { (action) in
-            let tabbar = self.tabBarController as! MainTabBarController
-            let navVC = tabbar.viewControllers?[1] as! UINavigationController
-            let likesVC = navVC.topViewController as! LikesCollectionViewController
             
-            likesVC.selectedImages.remove(at: selectedPhotos!.count)
-            likesVC.collectionView.reloadData()
+        let del = UIAlertAction(title: "Удалить", style: .default) { (action) in
+            
+            let delPhotos = self.collectionView.indexPathsForSelectedItems?.reduce([], { (photosss, indexPath) -> [UnsplashPhoto] in
+                var mutablePhotos = photosss
+                let photo = self.photosArray[indexPath.row]
+                self.deletePhoto(unlikedPhoto: photo)
+                self.collectionView.reloadData()
+                return mutablePhotos
+            })
         }
+                let cancel = UIAlertAction(title: "Отменить", style: .cancel) { (action) in
+                }
+                
+                alertController.addAction(del)
+                alertController.addAction(cancel)
+                self.present(alertController, animated: true)
+            }
         
-        let cancel = UIAlertAction(title: "Отменить", style: .cancel) { (action) in
-        }
-        alertController.addAction(add)
-        alertController.addAction(cancel)
-        present(alertController, animated: true)
-    }
     
     // MARK: - UICollectionViewDataSource
     
