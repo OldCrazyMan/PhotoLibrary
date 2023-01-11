@@ -78,10 +78,10 @@ class LikesCollectionViewController: UICollectionViewController {
             if sublikedPhoto.id == unlikedPhoto.id {
                 guard let photoIndex = sublikedPhotos.firstIndex(of: sublikedPhoto) else { return }
                 sublikedPhotos.remove(at: photoIndex)
+                self.collectionView.reloadData()
             }
     }
         self.photosArray = sublikedPhotos
-
 }
     
     // MARK: - NavigationItems action
@@ -99,11 +99,11 @@ class LikesCollectionViewController: UICollectionViewController {
             
         let del = UIAlertAction(title: "Удалить", style: .default) { (action) in
             
-            let delPhotos = self.collectionView.indexPathsForSelectedItems?.reduce([], { (photosss, indexPath) -> [UnsplashPhoto] in
-                var mutablePhotos = photosss
-                let photo = self.photosArray[indexPath.row]
+            let delPhotos = self.collectionView.indexPathsForSelectedItems?.reduce([], { (photos, indexPath) -> [UnsplashPhoto] in
+                var mutablePhotos = photos
+                let photo = self.photosArray[indexPath.item]
                 self.deletePhoto(unlikedPhoto: photo)
-                self.collectionView.reloadData()
+     
                 return mutablePhotos
             })
         }
